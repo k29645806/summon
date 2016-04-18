@@ -13,6 +13,7 @@ from tf.transformations import euler_from_quaternion
 class Kobuki(object):
     fwd_speed, rotate_speed = 0.0, 0.0
     x, y, heading = 0.0, 0.0, 0.0  ## heading unit: degrees
+    v, w = 0.0, 0.0
     x_record, y_record, heading_record, final_voice_angle_record = 0.0, 0.0, 0.0, 0.0
     voice_angle = -1   ## voice angle unit: degrees
     voiceID = 0
@@ -20,16 +21,18 @@ class Kobuki(object):
     state = 'idle'
     angle_remain, distance_remain = 0.0, 0.0
 
-    def __init__(self, fwd_speed=100, rotate_speed=100):
+    def __init__(self, fwd_speed=80, rotate_speed=80):
         self.default_fwd_speed = fwd_speed
         self.default_rotate_speed = rotate_speed
     def subscribe(self):
         rospy.Subscriber('/odom',Odometry, self.callback_odom)  # from robot_setup.py
-        rospy.Subscriber("/serial/read", String, self.callback_voice_angle) # from sound_localization.py
+        rospy.Subscriber("/voice_angle", String, self.callback_voice_angle) # from sound_localization.py
         rospy.Subscriber('/output',String, self.callback_voice_cmd)  # from recognizer.py
     def callback_odom(self, data):
         self.x = data.pose.pose.position.x
         self.y = data.pose.pose.position.y
+        self.v = data.twist.twist.linear.x
+        self.w = data.twist.twist.angular.z
         q1 = data.pose.pose.orientation.x
         q2 = data.pose.pose.orientation.y
         q3 = data.pose.pose.orientation.z
@@ -65,7 +68,7 @@ class Kobuki(object):
         self.heading_record = self.heading
         self.final_voice_angle_record = final_voice_angle
         bolin = exist and self.voiceID==1
-        rospy.loginfo("voice angle:%s voiceID:%s start:%s"%(self.final_voice_angle, self.voiceID, bolin))
+        rospy.loginfo("voice angle:%s voiceID:%s start:%s"%(final_voice_angle, self.voiceID, bolin))
         #self.state = 'rotate' if (exist and self.voiceID==1) else 'idle'
     def rotate(self):
         self.fwd_speed = 0.0
@@ -93,7 +96,7 @@ class Kobuki(object):
             self.state = 'forward'
 ## ----------------------------------------------------------------------------
     def print_info(self, possibility):
-        #print 'state:%s x:%s y:%s heading:%s'%(self.state, self.x, self.y, self.heading)
+        rospy.loginfo('state:%s x:%s y:%s heading:%s'%(self.state, self.x, self.y, self.heading))
         #print 'state:%s possibility:%s'% (self.state, possibility)
         #print 'voice_angle:%s angle_remain:%s distance_remain:%s'\
         #%(self.final_voice_angle_record, self.angle_remain, self.distance_remain)
@@ -130,6 +133,7 @@ class Voice(object):
         self.max_percentage = freq_mcu / freq_main
         self.check_length = int(freq_main * voice_duration)
         self.voice_angle_lst = [-1] * self.check_length
+        self.final_voice_angle = 0
 
     def siso(self, lst, value):
         lst.insert(0, value)
@@ -175,6 +179,5 @@ if __name__ == '__main__':
         elif kbk.state == 'forward':
             kbk.forward()
             kbk.forward_state_check()
-
         kbk.pub_cmd()
         rate.sleep()

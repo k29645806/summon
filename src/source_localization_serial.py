@@ -91,9 +91,8 @@ class SerialDataGateway(object):
 
 if __name__ == '__main__':
 	dataReceiver = SerialDataGateway("/dev/ttyACM1", 2400)
-	rospy.init_node('serial_node')
-	serialPublisher = rospy.Publisher('serial/read', String, queue_size=10)
-	#rospy.Subscriber("serial/write", String, dataReceiver.handleCommand)  # Is this line or the below bad redundancy?
+	rospy.init_node('voice_angle_serial_node')
+	serialPublisher = rospy.Publisher('/voice_angle', String, queue_size=10)
 	dataReceiver.Start()
 	rate = rospy.Rate(100)
 	try:

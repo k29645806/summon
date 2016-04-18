@@ -26,7 +26,7 @@ class Robot(object):
         self.laserScanPublisher = rospy.Publisher('/laserScan',LaserScan, queue_size=10)
         port = rospy.get_param("~port", "/dev/ttyACM0")
         baud_rate = int(rospy.get_param("~baudRate", 115200))
-        self.robotSerial = SerialDataGateway(port, baud_rate, self._handle_received_line)
+        self.robotSerial = SerialDataGateway(port, baud_rate, self._handle_received_line)  # connect with ST board
         rospy.Subscriber("/cmd_vel", Twist, self.pub_cmd_vel)
         self.x, self.y, self.yaw, self.v, self.w = 0.0, 0.0, 0.0, 0.0, 0.0    # start point
 #------------------------------handle serial command--------------------------
@@ -47,7 +47,6 @@ class Robot(object):
         cmd = "spd %d %d"%(vl,vr)   # 0~480
         #print cmd
         #self.robotSerial.Write(cmd)
-
 #-------------------------------------------------------------------------------
     def broadcastTF(self,data=None):
         x, y, theta = self.x, self.y, self.yaw
@@ -101,9 +100,9 @@ class Robot(object):
         rospy.loginfo("x:%.2f y:%.2f theta:%.2f v:%.2f w:%.2f"%(self.x,self.y,self.yaw,self.v,self.w))
 
     def start(self):
-        rate = rospy.Rate(20.0)
+        rate = rospy.Rate(100.0)
         rospy.loginfo("Robot Engine Start")
-        self.robotSerial.Start()
+        #self.robotSerial.Start()
         while not rospy.is_shutdown():
             try:
                 self.broadcastTF()
@@ -112,7 +111,8 @@ class Robot(object):
                 self.logInfo()
                 rate.sleep()
             finally:
-                self.robotSerial.Stop()
+                #self.robotSerial.Stop()
+                pass
     def testScript(self):
         rate = rospy.Rate(10.0)
         rospy.loginfo("Robot Engine Start")
@@ -132,4 +132,4 @@ class Robot(object):
 
 if __name__ == '__main__':
     kai = Robot()
-    kai.testScript()
+    kai.start()
