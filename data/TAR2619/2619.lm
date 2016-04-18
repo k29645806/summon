@@ -1,4 +1,4 @@
-Language model created by QuickLM on Sun Apr 17 22:45:48 EDT 2016
+Language model created by QuickLM on Mon Apr 18 03:07:17 EDT 2016
 Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
 
 The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
@@ -7,41 +7,27 @@ The code that was used to produce this language model is available in Open Sourc
 Please visit http://www.speech.cs.cmu.edu/tools/ for more information
 
 The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
-This model based on a corpus of 2 sentences and 5 words
+This model based on a corpus of 2 sentences and 4 words
 
 \data\
-ngram 1=5
-ngram 2=5
-ngram 3=3
+ngram 1=4
+ngram 2=4
+ngram 3=2
 
 \1-grams:
--0.8451 </s> -0.3010
--0.8451 <s> -0.2341
--1.1461 COME -0.2688
--1.1461 HERE -0.2341
--1.1461 STOP -0.2341
+-0.7782 </s> -0.3010
+-0.7782 <s> -0.2218
+-1.0792 COME -0.2218
+-1.0792 STOP -0.2218
 
 \2-grams:
 -0.6021 <s> COME 0.0000
 -0.6021 <s> STOP 0.0000
--0.3010 COME HERE 0.0000
--0.3010 HERE </s> -0.3010
+-0.3010 COME </s> -0.3010
 -0.3010 STOP </s> -0.3010
 
 \3-grams:
--0.3010 <s> COME HERE
+-0.3010 <s> COME </s>
 -0.3010 <s> STOP </s>
--0.3010 COME HERE </s>
 
 \end\
-COME - Main 
-HERE - Main 
-STOP - Main 
-
-<s> COME HERE </s>
-<s> STOP </s>
-COME
-HERE
-STOP
-come here
-stop

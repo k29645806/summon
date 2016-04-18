@@ -6,8 +6,8 @@
 
 <!---Speech to Text-->
   <node pkg="summon" type="recognizer.py" name="recognizer">
-    <param name="lm" type="string" value="/home/ubuntu/catkin_ws/src/summon/data/TAR1286/1286.lm" />
-    <param name="dic" type="string" value="/home/ubuntu/catkin_ws/src/summon/data/TAR1286/1286.dic" />
+    <param name="lm" type="string" value="/home/ubuntu/catkin_ws/src/summon/data/TAR2619/2619.lm" />
+    <param name="dic" type="string" value="/home/ubuntu/catkin_ws/src/summon/data/TAR2619/2619.dic" />
   </node>
 
 <!---Text to Speech-->
