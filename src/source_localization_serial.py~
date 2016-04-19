@@ -90,7 +90,7 @@ class SerialDataGateway(object):
 		self.f_readRenew = flag
 
 if __name__ == '__main__':
-	dataReceiver = SerialDataGateway("/dev/ttyACM0", 2400)
+	dataReceiver = SerialDataGateway("/dev/ttyACM0, 2400)
 	rospy.init_node('voice_angle_serial_node')
 	serialPublisher = rospy.Publisher('/voice_angle', String, queue_size=10)
 	dataReceiver.Start()

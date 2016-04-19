@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-import roslib
-roslib.load_manifest('summon')
 import rospy
 import time
 from math import degrees

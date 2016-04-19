@@ -1,0 +1,9 @@
+<!---Main-->
+<launch>
+<node name="recognizer" pkg="pocketsphinx" type="recognizer.py" output="screen">
+  <param name="lm" value="/home/ubuntu/catkin_ws/src/summon/data/TAR2619/2619.lm"/>
+  <param name="dict" value="/home/ubuntu/catkin_ws/src/summon/data/TAR2619/2619.dic"/>
+</node>
+
+
+</launch>
